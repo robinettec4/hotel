@@ -1,5 +1,5 @@
 <?php
-$members=[
+$rooms=[
 	[
 		'name'=>'Joe Average Hotel',
 		'bio'=>'This is Hotel room 1',
@@ -35,14 +35,15 @@ $members=[
     <title>Basic Hotel Room Browser</title>
   </head>
   <body>
+  <a href="signup.php">Click here to create an account!</a>
   <div class="container">
     <h1>Basic Hotel Room Browser</h1>
 	<?php
-	for($i=0;$i<count($members);$i++){
+	for($i=0;$i<count($rooms);$i++){
 		echo '<div class="media">
-  <img src="'.$members[$i]['picture'].'" class="mr-3" alt="'.$members[$i]['name'].'" width="96">
+  <img src="'.$rooms[$i]['picture'].'" class="mr-3" alt="'.$rooms[$i]['name'].'" width="96">
   <div class="media-body">
-    <h5 class="mt-0">'.$members[$i]['name'].'</h5>
+    <h5 class="mt-0">'.$rooms[$i]['name'].'</h5>
     <a href="detail.php?id='.$i.'">Visit profile</a>
   </div>
 </div>';
@@ -50,6 +51,7 @@ $members=[
 	}
 
 	?>
+	<a href="create.php">Click here to reserve a room!</a>
 	</div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
