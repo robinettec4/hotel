@@ -1,48 +1,38 @@
 <?php
-
-/*
-1. show signin form
-2. when the user submits the data we:*/
-function signin(){
-	if(count($_POST>0)){
-	//2.1 we check if the email is there and it's valid
-		if(!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)){
-			return 'The email is invalid';
-		}
-		$_POST['email']=strtolower($_POST['email']);
-	//2.2 we check if the password is there and it's valid	
-		$_POST['password']=trim($_POST['password']);
-		if(strlen($_POST['password'])<8){
-			return 'The password is invalid';
-		}
-	//2.3 check if email is in database
-		$h=fopen('accounts.csv','r');
-		while(!feof($h)){
-			$line=fgets($h);
-			if(strstr($line,$_POST['email'])){
-				//2.4 check if the password matches the password entered by the user: https://www.php.net/manual/en/function.password-verify.php	
-				$split=explode('\n',$line);
-				$hash=$split[1];
-				if(password_verify($_POST['password'], $hash)){
-					echo 'Congratulations';
-					return '';
-				}
-				else{
-					echo 'bad';
-					return '';
-				}
-			}
-		}
-	//2.5 we congratulate the user on their life achievement
-	}
-	
-}
-
+session_start();
+require_once('functions.php');
 ?>
-<form action="signin.php" method="POST">
-	E-mail
-	<input type="email" name="email" required /><br />
-	Password
-	<input type="password" name="password" required minlength="8" /><br />
-	<button type="submit">Sign In</button>
-</form>
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>Access your account</title>
+  </head>
+  <body>
+	  <div class="container">
+		<h1>Access your account</h1>
+		<form action="<?= $_SERVER['PHP_SELF'] ?>" method="post">
+		  <div class="form-group">
+			<label>Email address</label>
+			<input type="text" class="form-control" name="email">
+		  </div>
+		  <div class="form-group">
+			<label>Password</label>
+			<input type="password" class="form-control" name="password">
+		  </div>
+		  <button type="submit" class="btn btn-primary">Submit</button>
+		</form>
+	</div>
+		<!-- Optional JavaScript -->
+		<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+		<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  </body>
+</html>

@@ -1,26 +1,20 @@
 <?php
-$rooms=[
-	[
-		'name'=>'Joe Average Hotel',
-		'bio'=>'This is Hotel room 1',
-		'picture'=>'https://www3.hilton.com/resources/media/hi/BUEHIHH/en_US/img/shared/full_page_image_gallery/main/HH_exec1n_4_1270x560_FitToBoxSmallDimension_Center.jpg'
-	],
-	[
-		'name'=>'Exceptionally Overpriced Hotel',
-		'bio'=>'This is Hotel room 2',
-		'picture'=>'https://resources.stuff.co.nz/content/dam/images/1/3/t/x/5/v/image.related.StuffLandscapeSixteenByNine.1240x700.1a6stp.png/1457204991167.jpg'
-	],
-	[
-		'name'=>'Reasonably Priced Ralph\'s Hotel',
-		'bio'=>'This is Hotel room 3',
-		'picture'=>'https://g.foolcdn.com/image/?url=https%3A%2F%2Fg.foolcdn.com%2Feditorial%2Fimages%2F480528%2Fa-modern-high-end-hotel-room-with-a-view-over-the-water.jpg&w=700&op=resize'
-	],
-	[
-		'name'=>'Ripoff Rick\'s Hotel',
-		'bio'=>'This is Hotel room 4',
-		'picture'=>'https://i.dmarge.com/2018/11/villa-teresa-960x580.jpg'
-	]
+session_start();
+require_once('functions.php');
+
+$settings=[
+	'host'=>'localhost',
+	'db'=>'roomdb',
+	'user'=>'root',
+	'pass'=>''
 ];
+
+$opt=[
+	PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION,
+	PDO::ATTR_DEFAULT_FETCH_MODE=>PDO::FETCH_ASSOC,
+	PDO::ATTR_EMULATE_PREPARES=>false,
+];
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -34,24 +28,34 @@ $rooms=[
 
     <title>Basic Hotel Room Browser</title>
   </head>
-  <body>
-  <a href="signup.php">Click here to create an account!</a>
+  <body style="margin: 25px 25px; border: 3px;">
+  <a href="signup.php" class="btn btn-primary">Click here to create an account!</a>
+  <a style="position:absolute; top:25px; right:25px; text-align: right;" href="login.php" class="btn btn-primary">Click here to login to your account!</a>
   <div class="container">
     <h1>Basic Hotel Room Browser</h1>
 	<?php
-	for($i=0;$i<count($rooms);$i++){
+	$db = new PDO('mysql:host='.$settings['host'].';dbname='.$settings['db'].';charset=utf8mb4',$settings['user'],$settings['pass'], $opt);
+
+	$result=$db->query('SELECT * FROM hotel');
+	
+	while($record=$result->fetch()){
 		echo '<div class="media">
-  <img src="'.$rooms[$i]['picture'].'" class="mr-3" alt="'.$rooms[$i]['name'].'" width="96">
-  <div class="media-body">
-    <h5 class="mt-0">'.$rooms[$i]['name'].'</h5>
-    <a href="detail.php?id='.$i.'">Visit profile</a>
-  </div>
-</div>';
-		echo '<hr>';
+			<img src="'.$record['picture'].'" class="mr-3" alt="'.$record['name'].'" width="150">
+			<div class="media-body">
+				<h5 class="mt-0">'.$record['name'].'</h5>
+				<a href="detail.php?id='.$record['ID'].'">Visit profile</a>
+			</div>
+		</div>';
+		echo '<hr>';	
 	}
 
+	$db=null;
+	
+	if(is_logged()){
 	?>
+	
 	<a href="create.php">Click here to reserve a room!</a>
+	<?php } ?>
 	</div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
