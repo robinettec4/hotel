@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once('functions.php');
+signup($_POST);
 ?>
 <!doctype html>
 <html lang="en">
