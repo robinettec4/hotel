@@ -29,8 +29,16 @@ $opt=[
     <title>Basic Hotel Room Browser</title>
   </head>
   <body style="margin: 25px 25px; border: 3px;">
+  <?php if(!is_logged()){ ?>
   <a href="signup.php" class="btn btn-primary">Click here to create an account!</a>
   <a style="position:absolute; top:25px; right:25px; text-align: right;" href="login.php" class="btn btn-primary">Click here to login to your account!</a>
+  <?php } 
+  if(is_logged()){?>
+  <a href="signout.php" class="btn btn-primary">Click here to logout of your account!</a>
+  <?php	if (is_admin()){ ?>
+	<a style="position:absolute; top:25px; right:25px; text-align:right;" href="admin.php" class="btn btn-primary">Click here to access the admin zone</a>
+  <?php } 
+	}?>
   <div class="container">
     <h1>Basic Hotel Room Browser</h1>
 	<?php
