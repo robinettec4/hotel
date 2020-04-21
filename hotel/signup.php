@@ -1,7 +1,13 @@
 <?php
 session_start();
-require_once('functions.php');
-signup($_POST);
+require_once('temp.php');
+//signup($_POST);
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+		$user = new Customer($_POST['name'], $_POST['email'], $_POST['password']);
+		$error= $user->signup();
+		if(isset($error{0})) echo $error;
+}
 ?>
 <!doctype html>
 <html lang="en">
