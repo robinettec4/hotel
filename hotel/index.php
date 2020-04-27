@@ -2,6 +2,13 @@
 session_start();
 require_once('functions.php');
 
+if (isset($_SESSION['email'])) {
+	$user = new Customer($_SESSION['name'], $_SESSION['email']);
+}
+else{
+	$user = new Customer();
+}
+
 $settings=[
 	'host'=>'localhost',
 	'db'=>'roomdb',
@@ -19,6 +26,9 @@ $opt=[
 <!doctype html>
 <html lang="en">
   <head>
+  
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -27,20 +37,29 @@ $opt=[
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
     <title>Basic Hotel Room Browser</title>
+	
+	<script>
+	$(document).ready(function(){
+		$(".media").click(function(){
+			$(this).hide();
+		});
+	});
+	</script>
   </head>
   <body style="margin: 25px 25px; border: 3px;">
-  <?php if(!is_logged()){ ?>
+  <?php if(!$user->isLogged()){ ?>
   <a href="signup.php" class="btn btn-primary">Click here to create an account!</a>
   <a style="position:absolute; top:25px; right:25px; text-align: right;" href="login.php" class="btn btn-primary">Click here to login to your account!</a>
   <?php } 
-  if(is_logged()){?>
+  if($user->isLogged()){?>
   <a href="signout.php" class="btn btn-primary">Click here to logout of your account!</a>
-  <?php	if (is_admin()){ ?>
-	<a style="position:absolute; top:25px; right:25px; text-align:right;" href="admin.php" class="btn btn-primary">Click here to access the admin zone</a>
+  <?php	if ($user->isAdmin()){ ?>
+	<a style="position:absolute; top:25px; right:25px; text-align:right;" href="Admin/adminMain.php" class="btn btn-primary">Click here to access the admin zone</a>
   <?php } 
 	}?>
   <div class="container">
     <h1>Basic Hotel Room Browser</h1>
+	<h2>click a tab to hide it</h2>
 	<?php
 	$db = new PDO('mysql:host='.$settings['host'].';dbname='.$settings['db'].';charset=utf8mb4',$settings['user'],$settings['pass'], $opt);
 
@@ -59,7 +78,7 @@ $opt=[
 
 	$db=null;
 	
-	if(is_logged()){
+	if($user->isLogged()){
 	?>
 	
 	<a href="create.php">Click here to reserve a room!</a>

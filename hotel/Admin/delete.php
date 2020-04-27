@@ -1,9 +1,9 @@
 <?php
 	session_start();
-	require_once('../lib/auth_lib.php');
+	require_once('../functions.php');
 	$settings=[
 	'host'=>'localhost',
-	'db'=>'nonprofitlistingdb',
+	'db'=>'roomdb',
 	'user'=>'root',
 	'password'=>''
 	];
@@ -14,12 +14,17 @@
 	PDO::ATTR_EMULATE_PREPARES => false
 	];
 	//connecting to database
-	$pdo = new PDO('mysql:host='.$settings['host'].';dbname='.$settings['db'].';charset=utf8mb4',
-	$settings['user'],$settings['password'],$opt);	
-	$info=$pdo->query('SELECT * FROM nonprofits');
+	$pdo = new PDO('mysql:host='.$settings['host'].';dbname='.$settings['db'].';charset=utf8mb4', $settings['user'],$settings['password'],$opt);	
+	$info=$pdo->query('SELECT * FROM hotel');
 	
-	$user = new User();
-	if(!($user->isAdmin('email'))){
+	if (isset($_SESSION['email'])) {
+		$user= new Customer($_SESSION['name'], $_SESSION['email']);
+	}
+	else{
+		$user = new Customer();
+	}
+
+	if(!($user->isAdmin())){
 		echo 'You do not have admin privileges on this account, click here to return to the <a href="../index.php">index page</a>';
 		die();
 	}
@@ -49,10 +54,10 @@
 		while($row=$info->fetch()){
 			echo '<div class="card" style="width: 18rem;">
 			<div class="card-body">
-			<h5 class="card-title">'.$row['Name'].'</h5>
-			<h6 class="card-subtitle mb-2 text-muted">'.$row['phone'].' '.$row['email'].'</h6>
-			<p class="card-text">'.$row['missionStatement'].'</p>
-			<a href="deleteFinal.php?id='.$row['id'].'" class="card-link">More Details</a>
+			<h5 class="card-title">'.$row['name'].'</h5>
+			<h6 class="card-subtitle mb-2 text-muted">'.$row['address'].' '.$row['email'].'</h6>
+			<p class="card-text">'.$row['availableRooms'].'</p>
+			<a href="deleteFinal.php?id='.$row['ID'].'" class="card-link">More Details</a>
 			</div>
 			</div>
 			<hr>';

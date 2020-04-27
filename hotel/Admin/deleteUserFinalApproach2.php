@@ -1,10 +1,10 @@
 <?php
 	session_start();
-	include_once('../lib/auth_lib.php');
+	include_once('../functions.php');
 
 	$settings=[
 	'host'=>'localhost',
-	'db'=>'nonprofitlistingdb',
+	'db'=>'roomdb',
 	'user'=>'root',
 	'password'=>''
 	];
@@ -27,8 +27,7 @@
 	}
 	
 	$id=$_GET['id'];
-	$pdo = new PDO('mysql:host='.$settings['host'].';dbname='.$settings['db'].';charset=utf8mb4',
-	$settings['user'],$settings['password'],$opt);
+	$pdo = new PDO('mysql:host='.$settings['host'].';dbname='.$settings['db'].';charset=utf8mb4', $settings['user'],$settings['password'],$opt);
 	$query='DELETE FROM users WHERE id = "'.$id.'"';
 	$q=$pdo->query($query);
 	

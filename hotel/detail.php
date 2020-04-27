@@ -3,6 +3,13 @@
 session_start();
 require_once('functions.php');
 
+if (isset($_SESSION['email'])) {
+	$user= new Customer($_SESSION['name'], $_SESSION['email']);
+}
+else{
+	$user = new Customer();
+}
+
 $settings=[
 	'host'=>'localhost',
 	'db'=>'roomdb',
@@ -23,6 +30,9 @@ $recordHotel=$resultHotel->fetch();
 $resultRoom=$db->query('SELECT * FROM room WHERE hotelID = '.$_GET['id']);
 $recordRoom=$resultRoom->fetch();
 
+$query='SELECT * FROM comments';
+$q=$db->prepare($query);
+$q->execute();
 
 if(!isset($_GET['id'])){
 	echo 'Please enter the id of a member or visit the <a href="index.php">index page</a>.';
@@ -34,6 +44,8 @@ $db = null;
 <!doctype html>
 <html lang="en">
   <head>
+  
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -48,10 +60,11 @@ $db = null;
 		<img src="<?= $recordRoom['picture'] ?>">
 		<div class="card-body">
 			<h5 class="card-title"><?= $recordHotel['name']?></h5>
-			<p class="card-text"><?= $recordRoom['description'] ?></p> 
-			<a href="index.php" class="btn btn-primary">Go back</a>	<a href="reserve.php" class="btn btn-primary">Reserve</a>
+			<p class="card-text"><?= $recordRoom['description'] ?></p>
+			<a href="index.php" class="btn btn-primary">Go back</a>	<?php if($user->islogged()){ ?> <a href="reserve.php" class="btn btn-primary">Reserve</a> <?php } ?>
 		</div>
-	</div>
+	  </div>
+  </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>

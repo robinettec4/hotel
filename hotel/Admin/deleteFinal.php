@@ -1,10 +1,10 @@
 <?php
 	session_start();
-	include_once('../lib/auth_lib.php');
+	include_once('../functions.php');
 
 	$settings=[
 	'host'=>'localhost',
-	'db'=>'nonprofitlistingdb',
+	'db'=>'roomdb',
 	'user'=>'root',
 	'password'=>''
 	];
@@ -15,13 +15,18 @@
 	PDO::ATTR_EMULATE_PREPARES => false
 	];
 	//connecting to database
-	$pdo = new PDO('mysql:host='.$settings['host'].';dbname='.$settings['db'].';charset=utf8mb4',
-	$settings['user'],$settings['password'],$opt);
-	$info=$pdo->query('SELECT * FROM nonprofits WHERE id='.$_GET['id']);
+	$pdo = new PDO('mysql:host='.$settings['host'].';dbname='.$settings['db'].';charset=utf8mb4', $settings['user'],$settings['password'],$opt);
+	$info=$pdo->query('SELECT * FROM hotel WHERE ID ='.$_GET['id']);
 	$row=$info->fetch();
 	
-	$user = new User();
-	if(!($user->isAdmin('email'))){
+	if (isset($_SESSION['email'])) {
+		$user= new Customer($_SESSION['name'], $_SESSION['email']);
+	}
+	else{
+		$user = new Customer();
+	}
+
+	if(!($user->isAdmin())){
 		echo 'You do not have admin privileges on this account, click here to return to the <a href="../index.php">index page</a>';
 		die();
 	}
@@ -50,14 +55,12 @@
       <div class="template">
 	  <?php
 		echo '<div>
-			<h3>'.$row['Name'].'</h3>
+			<h3>'.$row['name'].'</h3>
 			<h5>Contact Information</h5>
-			<p>'.$row['founderFirstName'].' '.$row['founderLastName'].'<br>
-			'.$row['email'].' ('.$row['phone'].') <br>
-			'.$row['streetName'].'  '.$row['city'].', '.$row['state'].'  '.$row['zipCode'].'<br>
+			<p>'.$row['email'].'<br>
+			'.$row['address'].'<br>
 			</p>
-			<h5>Mission Statement</h5>
-			<p>'.$row['missionStatement'].'</p>
+			<img src="../'.$row['picture'].'">
 			</div>
 			<a href="deleteFinalApproach2.php?id='.$_GET['id'].'" type="button">Delete</button>';
 		?>

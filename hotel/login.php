@@ -1,7 +1,12 @@
 <?php
 session_start();
 require_once('functions.php');
-signin($_POST);
+//signin($_POST);
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+		$user = new Customer('', $_POST['email'], $_POST['password']);
+		$error= $user->login();
+		if(isset($error{0})) echo $error;
+}
 ?>
 <!doctype html>
 <html lang="en">

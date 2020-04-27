@@ -18,63 +18,56 @@ $opt=[
 
 $db = new PDO('mysql:host='.$settings['host'].';dbname='.$settings['db'].';charset=utf8mb4',$settings['user'],$settings['pass'], $opt);
 
-function is_logged(){
-	if(!isset($_SESSION['username'])){
-		return 0;
+function createDb($data){
+	$settings=[
+		'host'=>'localhost',
+		'db'=>'roomdb',
+		'user'=>'root',
+		'pass'=>''
+	];
+				
+	$opt=[
+		PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+		PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+		PDO::ATTR_EMULATE_PREPARES => false,
+	];
+
+	$pdo= new PDO('mysql:host='.$settings['host'].';dbname='.$settings['db'].';charset=utf8mb4', $settings['user'], $settings['pass'], $opt);
+
+	if(isset($data['streetName'])){
+        $query='INSERT INTO hotel (name, address, email, picture) VALUES (?, ?, ?, ?)';
+        $q=$pdo->prepare($query);
+        $q->execute([$data['name'], $data['address'], $data['email'], $data['picture']]);
 	}
-	return 1;
+	
 }
 
-function signup($data){
-	//check if user already exists
-	if(!empty($_POST)) {
-		$record=$GLOBALS['db']->query('SELECT * FROM customer WHERE email = "'.$data['email'].'"');
-		$result=$record->fetch();
-		if (empty($result)) {
-			//create account
-			$GLOBALS['db']->query('INSERT INTO customer (name, email, password) VALUES ("'.$data['name'].'","'.$data['email'].'","'.$data['password'].'")');
-			echo 'Congratulations you are now registered! <a href="index.php">Click here to return to the index page!</a>';
-		}
-		else {
-			echo 'That email is already registered!';
-		}
-	}
-}
+function modify($data, $table){
+	$settings=[
+		'host'=>'localhost',
+		'db'=>'roomdb',
+		'user'=>'root',
+		'pass'=>''
+	];
+				
+	$opt=[
+		PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+		PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+		PDO::ATTR_EMULATE_PREPARES => false,
+	];
 
-function signin($data){
-	//check login info and login if correct
-	if(!empty($_POST)) {
-		$record=$GLOBALS['db']->query('SELECT * FROM customer WHERE email = "'.$data['email'].'"');
-		$result=$record->fetch();
-		if(!empty($result)) {
-			if($result['password']==$data['password']) {
-				echo "Congratulations, you are logged in as ".$result['name']."\n";
-				echo 'Click here to return to <a href="index.php">index</a>';
-				$_SESSION['username']=$data['email'];
-				return'';
-			}
-		}
-	}
-}
+	$pdo= new PDO('mysql:host='.$settings['host'].';dbname='.$settings['db'].';charset=utf8mb4', $settings['user'], $settings['pass'], $opt);
 
-function signout(){
-	header('location: index.php');
-	session_destroy();
-}
-
-function is_admin(){
-	if(is_logged()){
-		$record=$GLOBALS['db']->query('SELECT * FROM customer WHERE email= "'.$_SESSION['username'].'"');
-		$result=$record->fetch();
-		$id=$result['ID'];
-		$record2=$GLOBALS['db']->query('SELECT * FROM admin WHERE  customerID='.$id);
-		$result2=$record2->fetch();
-		if (empty($result2)){
-			return 0;
+	if(isset($data['edit'])){
+		if(strcmp($data['drop'],"password")==0){
+			$data['edit'] = trim($data['edit']);
+			$data['edit']= password_hash($data['edit'], PASSWORD_DEFAULT);
 		}
-		else {
-			return 1;
-		}
+		
+		$query='UPDATE '.$table.' SET '.$data['drop'].'="'.$data['edit'].'" WHERE id = "'.$data['id'].'"';
+		$q=$pdo->prepare($query);
+		$q->execute();
+		echo 'information successfully edited';
 	}
 }
 
@@ -90,7 +83,7 @@ class Customer{
 		$this->name=$name;
 	}
 	
-	public function isAdmin($data){
+	public function isAdmin(){
 		//connect to db
 		$settings=[
 			'host'=>'localhost',
@@ -109,7 +102,7 @@ class Customer{
 
 		
 		//get usertype related to email
-		$user=$_SESSION[$data];
+		$user=$_SESSION['email'];
 		$query='SELECT userType FROM customer WHERE email = ?';
 		$q=$db->prepare($query);
 		$q->execute([$user]);
@@ -130,8 +123,17 @@ class Customer{
 	}
 	*/
 	
-	public function isLogged($data){
-		return isset($_SESSION[$data]{0});
+	public function isReservee($data){
+		//connect to database
+	
+		//check if customerID in reservation is == to customer ID (primary key)
+	}
+	
+	
+
+	
+	public function isLogged(){
+		return isset($_SESSION['email']{0});
 	}
 	
 	public function signup(){
@@ -187,7 +189,8 @@ class Customer{
 	
 	public function login(){
 		//connect to db
-		
+		echo $this->email;
+		echo $this->pwd;
 		$settings=[
 			'host'=>'localhost',
 			'db'=>'roomdb',
@@ -213,7 +216,7 @@ class Customer{
         $this->pwd = trim($this->pwd);
         
         $query='SELECT password FROM customer WHERE email=?';
-        $q=$pdo->prepare($query);
+        $q=$db->prepare($query);
         $q->execute([$this->email]);
 
         if($q->rowCount()>0){
@@ -221,17 +224,89 @@ class Customer{
             $pwdDB=$pwdArr['password'];
             if(!password_verify($this->pwd, $pwdDB)){
                 echo 'Password does not match!';
+				die();
             }
             else{
                 $_SESSION['email'] = $this->email;
+				$query='SELECT name FROM customer WHERE email=?';
+				$q=$db->prepare($query);
+				$q->execute([$_SESSION['email']]);
+				$nameArr=$q->fetch();
+				$_SESSION['name']=$nameArr['name'];
                 echo 'You have sucessfully signed in to your account. <a href="index.php">Welcome!</a>';
+				die();
             }  
         }
-        echo 'The credentials entered are not registered, you may need to <a href="../UserManagment/Signup.php">Sign Up</a>';
+        echo 'The credentials entered are not registered, you may need to <a href="signup.php">Sign Up</a>';
 	}
 	
-	public function signout($data){
+	public function signout(){
 		header('location: index.php');
 		session_destroy();
 	}
+	
+	public function reserve($data){
+		//connect to db
+		$settings=[
+			'host'=>'localhost',
+			'db'=>'roomdb',
+			'user'=>'root',
+			'pass'=>''
+		];
+
+		$opt=[
+			PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION,
+			PDO::ATTR_DEFAULT_FETCH_MODE=>PDO::FETCH_ASSOC,
+			PDO::ATTR_EMULATE_PREPARES=>false,
+		];
+
+		$db = new PDO('mysql:host='.$settings['host'].';dbname='.$settings['db'].';charset=utf8mb4',$settings['user'],$settings['pass'], $opt);
+		
+		//check if room is free during date
+		
+		$query='SELECT ID FROM room WHERE hotelID = ?';
+		$q=$db->prepare($query);
+		$q->execute([$data['hotelID']]);
+		
+		//get entries of all rooms in hotel
+		while($room=$q->fetch()){
+			//find day start
+			$queryDayB='SELECT dayStart FROM reservation WHERE roomID = ?';
+			//find day end
+			$queryDayE='SELECT dayEnd FROM reservation WHERE roomID = ?';
+			
+			$qdb=$db->prepare($queryDayB);
+			$qdb->execute([$room['id']]);
+			$dayStart=$qdb->fetch();
+			$dayStart=$qdbF['dayStart'];
+			
+			$qde=$db->prepare($queryDayE);
+			$qde->execute([$room['id']]);
+			$qdeF=$qde->fetch();
+			$dayEnd=$qdeF['dayEnd'];
+			
+			//check if either start or end are between the start and end of an existing reservation for each room
+			while($dayStart=$qdb->fetch() && $dayEnd=$qde->fetch()){
+				$query='SELECT * FROM reservation WHERE  roomID = ? AND ? BETWEEN ? AND ?';
+				$query2='SELECT * FROM reservation WHERE  roomID = ? AND ? BETWEEN ? AND ?';
+				
+				$qf=$db->prepare($query);
+				$qf2=$db->prepare($query2);
+				
+				$qf->execute([$room['id'], $data['dayStart'], $dayStart, $dayEnd]);
+				$qf2->execute([$room['id'], $data['dayEnd'], $dayStart, $dayEnd]);
+				if($qf->rowCount()>0 && $qf2->rowCount()>0){
+					//create reservation
+					$query = 'INSERT INTO reservation (roomID, customerID, numberOfGuests, dayStart, dayEnd, creditCardID) VALUES (?, ?, ?, ?, ?, ?)';
+					$qi=$db->prepare($query);
+					$qi->execute([$room['id'], $this->id, $data['guests'], $data['dayStart'], $data['dayEnd'], $data['creditCardID']]);
+					echo 'Reservation created!';
+					die();
+				}
+			}
+		}
+		echo 'There are no available rooms in this hotel for those dates';
+		die();
+	}
+
 }

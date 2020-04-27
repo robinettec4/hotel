@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 11, 2020 at 04:17 AM
+-- Generation Time: Apr 27, 2020 at 11:22 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.1
 
@@ -25,20 +25,21 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `admin`
+-- Table structure for table `comments`
 --
 
-CREATE TABLE `admin` (
-  `ID` int(11) UNSIGNED NOT NULL,
-  `customerID` int(11) UNSIGNED NOT NULL
+CREATE TABLE `comments` (
+  `name` varchar(40) NOT NULL,
+  `comment` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `admin`
+-- Dumping data for table `comments`
 --
 
-INSERT INTO `admin` (`ID`, `customerID`) VALUES
-(1, 1);
+INSERT INTO `comments` (`name`, `comment`) VALUES
+('Connor Robinette', 'test comment'),
+('Robinette Connor', 'comment test');
 
 -- --------------------------------------------------------
 
@@ -55,13 +56,6 @@ CREATE TABLE `creditcard` (
   `Accepted` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `creditcard`
---
-
-INSERT INTO `creditcard` (`ID`, `customerID`, `cardNumber`, `cardExpiration`, `cardSecurityNumber`, `Accepted`) VALUES
-(1, 1, 1111222233334444, '2020-04-01', 123, 1);
-
 -- --------------------------------------------------------
 
 --
@@ -72,17 +66,16 @@ CREATE TABLE `customer` (
   `ID` int(11) UNSIGNED NOT NULL,
   `name` varchar(40) CHARACTER SET utf8 NOT NULL,
   `email` varchar(40) CHARACTER SET utf8 NOT NULL,
-  `password` varchar(40) CHARACTER SET utf8 NOT NULL
+  `password` varchar(60) CHARACTER SET utf8 NOT NULL,
+  `userType` tinyint(3) UNSIGNED NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `customer`
 --
 
-INSERT INTO `customer` (`ID`, `name`, `email`, `password`) VALUES
-(1, 'Connor Robinette', 'connor.robinette@gmail.com', 'password1'),
-(2, 'Angela Robinette', 'angela.robinette@gmail.com', 'password2'),
-(3, 'Gregory Robinette', 'greg.robinette@gmail.com', 'password3');
+INSERT INTO `customer` (`ID`, `name`, `email`, `password`, `userType`) VALUES
+(13, 'admin', 'admin@gmail.com', '$2y$10$6NUv.w.xgjwVXD0pMiv/2eylhYIlqlfuylEndklloPU7de2n1A.1K', 1);
 
 -- --------------------------------------------------------
 
@@ -118,20 +111,12 @@ INSERT INTO `hotel` (`ID`, `address`, `email`, `availableRooms`, `name`, `pictur
 CREATE TABLE `reservation` (
   `ID` int(11) UNSIGNED NOT NULL,
   `roomID` int(11) UNSIGNED NOT NULL,
-  `hotelID` int(11) UNSIGNED NOT NULL,
   `customerID` int(11) UNSIGNED NOT NULL,
   `numberOfGuests` int(11) NOT NULL,
   `dayStart` date NOT NULL,
   `dayEnd` date NOT NULL,
   `creditCardID` int(11) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `reservation`
---
-
-INSERT INTO `reservation` (`ID`, `roomID`, `hotelID`, `customerID`, `numberOfGuests`, `dayStart`, `dayEnd`, `creditCardID`) VALUES
-(1, 1, 1, 1, 1, '2020-04-01', '2020-04-04', 1);
 
 -- --------------------------------------------------------
 
@@ -163,13 +148,6 @@ INSERT INTO `room` (`ID`, `hotelID`, `price`, `size`, `picture`, `description`) 
 --
 
 --
--- Indexes for table `admin`
---
-ALTER TABLE `admin`
-  ADD PRIMARY KEY (`ID`),
-  ADD KEY `customerID` (`customerID`);
-
---
 -- Indexes for table `creditcard`
 --
 ALTER TABLE `creditcard`
@@ -195,9 +173,8 @@ ALTER TABLE `hotel`
 --
 ALTER TABLE `reservation`
   ADD PRIMARY KEY (`ID`),
-  ADD KEY `roomID` (`roomID`,`hotelID`,`customerID`),
+  ADD KEY `roomID` (`roomID`,`customerID`),
   ADD KEY `creditCardID` (`creditCardID`),
-  ADD KEY `hotelID` (`hotelID`),
   ADD KEY `customerID` (`customerID`);
 
 --
@@ -213,12 +190,6 @@ ALTER TABLE `room`
 --
 
 --
--- AUTO_INCREMENT for table `admin`
---
-ALTER TABLE `admin`
-  MODIFY `ID` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
 -- AUTO_INCREMENT for table `creditcard`
 --
 ALTER TABLE `creditcard`
@@ -228,13 +199,13 @@ ALTER TABLE `creditcard`
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `ID` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `ID` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `hotel`
 --
 ALTER TABLE `hotel`
-  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `reservation`
@@ -253,12 +224,6 @@ ALTER TABLE `room`
 --
 
 --
--- Constraints for table `admin`
---
-ALTER TABLE `admin`
-  ADD CONSTRAINT `admin_ibfk_1` FOREIGN KEY (`customerID`) REFERENCES `customer` (`ID`);
-
---
 -- Constraints for table `creditcard`
 --
 ALTER TABLE `creditcard`
@@ -269,7 +234,6 @@ ALTER TABLE `creditcard`
 --
 ALTER TABLE `reservation`
   ADD CONSTRAINT `reservation_ibfk_1` FOREIGN KEY (`roomID`) REFERENCES `room` (`ID`),
-  ADD CONSTRAINT `reservation_ibfk_2` FOREIGN KEY (`hotelID`) REFERENCES `hotel` (`ID`),
   ADD CONSTRAINT `reservation_ibfk_3` FOREIGN KEY (`customerID`) REFERENCES `customer` (`ID`),
   ADD CONSTRAINT `reservation_ibfk_4` FOREIGN KEY (`creditCardID`) REFERENCES `creditcard` (`ID`);
 
