@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 27, 2020 at 11:22 PM
+-- Generation Time: Apr 28, 2020 at 09:00 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.1
 
@@ -75,7 +75,10 @@ CREATE TABLE `customer` (
 --
 
 INSERT INTO `customer` (`ID`, `name`, `email`, `password`, `userType`) VALUES
-(13, 'admin', 'admin@gmail.com', '$2y$10$6NUv.w.xgjwVXD0pMiv/2eylhYIlqlfuylEndklloPU7de2n1A.1K', 1);
+(13, 'admin', 'admin@gmail.com', '$2y$10$6NUv.w.xgjwVXD0pMiv/2eylhYIlqlfuylEndklloPU7de2n1A.1K', 1),
+(15, 'Connor Robinette', 'connor@gmail.com', '$2y$10$evi9m7kzwiZIKyQpfSdpkeyKsL18loPZOtbmHLQA2KDTGa9r5BZ0m', 0),
+(17, 'Test Testington', 'test@gmail.com', '$2y$10$lTd73HXUDp5MpXYYhEW9KecuG74BMnupk5ug8P4LPTDEShjbUQmVK', 1),
+(18, 'idiot dumb', 'gmail@gmail.com', '$2y$10$KGhK7DJDLkaaZ9yDuIiSbO7oxXEbFdu6dQe3.ncaraSFCKbWxdqRK', 0);
 
 -- --------------------------------------------------------
 
@@ -97,7 +100,7 @@ CREATE TABLE `hotel` (
 --
 
 INSERT INTO `hotel` (`ID`, `address`, `email`, `availableRooms`, `name`, `picture`) VALUES
-(1, '1 Average Avenue', 'joe.average@gmail.com', 10, 'Joe Average Hotel', 'picture/average.jpg'),
+(1, '1 Average Avenue', 'joe.average@gmail.com', 3, 'Joe Average Hotel', 'picture/average.jpg'),
 (2, '2 Exceptional Expressway', 'exceptionalhotels@gmail.com', 5, 'Exceptionally Overpriced Hotel', 'picture/overpriced.jpg'),
 (3, '3 Reasonable Road', 'reasonable.ralph@gmail.com', 7, 'Reasonable Ralph\'s Hotel', 'picture/reasonable.jpg'),
 (4, '4 Ripoff Route', 'rick.ripoff@gmail.com', 20, 'Ripoff Rick\'s Hotel', 'picture/ripoff.jpg');
@@ -141,7 +144,9 @@ INSERT INTO `room` (`ID`, `hotelID`, `price`, `size`, `picture`, `description`) 
 (1, 1, 100, 2, 'picture/average.jpg', 'This is the description for room 1'),
 (2, 2, 900, 1, 'picture/overpriced.jpg', 'This is the description for room 2'),
 (3, 3, 150, 4, 'picture/reasonable.jpg', 'This is the description for room 3'),
-(4, 4, 200, 2, 'picture/ripoff.jpg', 'This is the description for room 4');
+(4, 4, 200, 2, 'picture/ripoff.jpg', 'This is the description for room 4'),
+(5, 1, 90, 2, 'average.jpg', 'This is the description for this room'),
+(9, 1, 90, 2, 'average.jpg', '1');
 
 --
 -- Indexes for dumped tables
@@ -199,7 +204,7 @@ ALTER TABLE `creditcard`
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `ID` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `ID` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `hotel`
@@ -217,7 +222,7 @@ ALTER TABLE `reservation`
 -- AUTO_INCREMENT for table `room`
 --
 ALTER TABLE `room`
-  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Constraints for dumped tables
