@@ -64,6 +64,7 @@
 		}
 	?>
       </div>
+	  <a href="adminMain.php">Go Back</a>
 
     </main><!-- /.container -->
 

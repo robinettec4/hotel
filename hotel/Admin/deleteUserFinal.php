@@ -1,10 +1,10 @@
 <?php
 	session_start();
-	include_once('../lib/auth_lib.php');
+	include_once('../functions.php');
 
 	$settings=[
 	'host'=>'localhost',
-	'db'=>'nonprofitlistingdb',
+	'db'=>'roomdb',
 	'user'=>'root',
 	'password'=>''
 	];
@@ -17,11 +17,17 @@
 	//connecting to database
 	$pdo = new PDO('mysql:host='.$settings['host'].';dbname='.$settings['db'].';charset=utf8mb4',
 	$settings['user'],$settings['password'],$opt);
-	$info=$pdo->query('SELECT * FROM users WHERE id='.$_GET['id']);
+	$info=$pdo->query('SELECT * FROM customer WHERE id='.$_GET['id']);
 	$row=$info->fetch();
 	
-	$user = new User();
-	if(!($user->isAdmin('email'))){
+	if (isset($_SESSION['email'])) {
+		$user= new Customer($_SESSION['name'], $_SESSION['email']);
+	}
+	else{
+		$user = new Customer();
+	}
+
+	if(!($user->isAdmin())){
 		echo 'You do not have admin privileges on this account, click here to return to the <a href="../index.php">index page</a>';
 		die();
 	}
@@ -50,13 +56,14 @@
       <div class="template">
 	  <?php
 		echo '<div>
-			<h3>'.$row['firstName'].' '.$row['lastName'].'</h3>
+			<h3>'.$row['name'].'</h3>
 			<h5>Contact Information</h5>
 			<p>'.$row['email'].'<br>'.$row['userType'].'<br>
 			</div>
 			<a href="deleteUserFinalApproach2.php?id='.$_GET['id'].'" type="button">Delete</button>';
 		?>
       </div>
+	  <a href="deleteUser.php">Go Back</a>
 
     </main><!-- /.container -->
 

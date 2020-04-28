@@ -14,25 +14,27 @@
 		die();
 	}
 	
-	createDb($_POST);
+	if(isset($_POST['hotelID'])){
+		createRoom($_POST);
+	}
 	
 ?>
 <!doctype html>
 <form method="POST" action="<?php $_SERVER['PHP_SELF'] ?>">
-	<label for="Name">Name</label><br>
-	<input type="text" id="Name" name="Name"><br>
+	<label for="hotelID">Hotel ID</label><br>
+	<input type="text" id="hotelID" name="hotelID"><br>
 	
-	<label for="address">Address</label><br>
-	<input type="text" id="address" name="address"><br>
+	<label for="price">Price</label><br>
+	<input type="text" id="price" name="price"><br>
 	
-	<label for="state">State</label><br>
-	<input type="text" id="state" name="state"><br>
+	<label for="size">Size</label><br>
+	<input type="text" id="size" name="size"><br>
 	
-	<label for="email">E-mail</label><br>
-	<input type="text" id="email" name="email"><br>
-	
-	<label for="picture">Picture Link</label><br>
+	<label for="picture">Picture File Name</label><br>
 	<input type="text" id="picture" name="picture"><br>
+	
+	<label for="description">Description</label><br>
+	<textarea id="description" name="description" rows="5" cols="20"></textarea><br>
 	
 	<input type="submit" value="Submit">
 	<a href="adminMain.php">Go Back</a>

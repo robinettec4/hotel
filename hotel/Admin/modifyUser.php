@@ -46,4 +46,5 @@
 		<textarea id="edit" name="edit" rows="4" cols="65"></textarea><br>
 		<input type="submit" value="Submit">
 	</form>
+	<a href="adminMain.php">Go Back</a>
 </body>

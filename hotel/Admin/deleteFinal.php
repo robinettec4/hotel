@@ -65,6 +65,7 @@
 			<a href="deleteFinalApproach2.php?id='.$_GET['id'].'" type="button">Delete</button>';
 		?>
       </div>
+	  <a href="delete.php">Go Back</a>
 
     </main><!-- /.container -->
 
