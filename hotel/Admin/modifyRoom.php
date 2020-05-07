@@ -14,7 +14,7 @@
 	}
 	
 	if ($_SERVER["REQUEST_METHOD"] === "POST") {
-		$result=modify($_POST, 'hotel');
+		$result=modify($_POST, 'room');
 		echo $result;
 	}
 	
@@ -35,25 +35,19 @@
 
 		<!-- Bootstrap CSS -->
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
 	</head>
 
 	<body>
 		<div class="container">
-			<h1>Modify Existing Hotel Entry</h1>
+		<h1>Edit Existing Room</h1>
 			<form method="POST" action="<?php $_SERVER['PHP_SELF']?>">
 				<div class="form-group">
 					<label for="drop">Select Field to Edit</label>
 					<select id="drop" name="drop" class="form-control">
-						<option value = "name">Name</option>
-						<option value = "address">Address</option>
-						<option value = "email">Email</option>
-						<option value = "picture">Picture Filename</option>
-						<option value = "price">Price Per Night</option>
-						<option value = "description">Description</option>
-						<option value = "size">Guests Per Room</option>
+						<option value = "roomNumber">Room Number</option>
+						<option value = "hotelID">Hotel ID</option>
 					</select>
-				</div>
+				<div>
 				<div class="form-group">
 					<label for="id">Enter ID of Entry to Edit</label>
 					<input type="text" id="id" name="id" class="form-control">
@@ -62,10 +56,10 @@
 					<label for="edit">Information to Insert</label>
 					<textarea id="edit" name="edit" rows="4" cols="65" class="form-control"></textarea>
 				</div>
-				<input type="submit" value="Submit" class="btn btn-primary"> <a href="adminMain.php" class="btn btn-primary">Go Back</a>
+				<input type="submit" value="Submit" class="btn btn-primary">
+				<a href="adminMain.php" class="btn btn-primary">Go Back</a>
 			</form>
 		</div>
-		
 		<!-- Optional JavaScript -->
 		<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 		<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>

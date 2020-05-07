@@ -22,17 +22,12 @@
 	$id=$_GET['id'];
 	
 	//delete any reservations for the target user
-	$query='DELETE FROM reservation WHERE customerID = ?';
-	$q=$db->prepare($query);
-	$q->execute([$id]);
-	
-	//delete any credit cards attached to the user
-	$query='DELETE FROM creditcard WHERE customerID = ?';
+	$query='DELETE FROM reservation WHERE roomID = ?';
 	$q=$db->prepare($query);
 	$q->execute([$id]);
 	
 	//delete entry
-	$query='DELETE FROM customer WHERE ID = ?';
+	$query='DELETE FROM room WHERE ID = ?';
 	$q=$db->prepare($query);
 	$q->execute([$id]);
 	

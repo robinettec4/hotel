@@ -5,7 +5,15 @@
 	require_once(APP_ROUTE.'/Db.php');
 	
 	$db=Db::Connect(DB_SETTINGS);
-	$info=$db->query('SELECT * FROM customer');
+	$query='SELECT * FROM room WHERE ID = ?';
+	$info=$db->prepare($query);
+	$info->execute([$_GET['id']]);
+	$row=$info->fetch();
+	
+	$query='SELECT * FROM hotel WHERE ID = ?';
+	$q=$db->prepare($query);
+	$q->execute([$row['hotelID']]);
+	$hotel=$q->fetch();
 	
 	if (isset($_SESSION['email'])) {
 		$user= new Customer($_SESSION['name'], $_SESSION['email']);
@@ -25,7 +33,8 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-		<title>Non-Profit Connections</title>
+
+		<title><?= $row['Name']?></title>
 
 		<link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/starter-template/">
 
@@ -41,20 +50,15 @@
 
 			<div class="template">
 				<?php
-					while($row=$info->fetch()){
-						echo '<div class="card" style="width: 18rem;">
-							<div class="card-body">
-								<h5 class="card-title">'.$row['name'].'</h5>
-								<h6 class="card-subtitle mb-2 text-muted">Email '.$row['email'].'</h6>
-								<p class="card-text">User Type '.$row['userType'].'</p>
-								<a href="deleteUserFinal.php?id='.$row['ID'].'" class="card-link">More Details</a><br>
-							</div>
-						</div>
-						<hr>';
-					}
+					echo '<div>
+						<h3>Room Number '.$row['roomNumber'].'</h3>
+						<h5>Contact Information</h5>
+						<p>Room ID '.$row['ID'].'<br>Hotel '.$hotel['name'].'<br>
+					</div>
+					<a href="deleteUserFinalApproach2.php?id='.$_GET['id'].'" type="button">Delete</button>';
 				?>
-				<a href="adminMain.php" class="btn btn-primary">Go Back</a>
 			</div>
+			<a href="deleteUser.php">Go Back</a>
 
 		</main><!-- /.container -->
 

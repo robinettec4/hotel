@@ -1,32 +1,16 @@
 <?php
 	session_start();
-	require_once('../lib/settings.php');
-	require_once(APP_ROUTE.'/functions.php');
-	require_once(APP_ROUTE.'/Db.php');
-	
-	if (isset($_SESSION['email'])) {
-		$user= new Customer($_SESSION['name'], $_SESSION['email']);
-	}
-	else{
-		$user = new Customer();
-	}
+	require_once('../lib/functions.php');
 
-    if(!($user->isAdmin())){
-		echo 'You do not have admin privileges on this account, click here to return to the <a href="../index.php">index page</a>';
-		die();
+
+	if ($_SERVER["REQUEST_METHOD"] === "POST") {
+			$user = new Customer($_POST['name'], $_POST['email'], $_POST['password']);
+			$error= $user->signup();
+			if(isset($error{0})) echo $error;
 	}
-	
-	if(isset($_POST['hotelID'])){
-		$result=createRoom($_POST);
-		echo $result;
-	}
-	
 ?>
 <!doctype html>
 <html lang="en">
-	<title>Admin Page</title>
-
-
 	<head>
 		<!-- Required meta tags -->
 		<meta charset="utf-8">
@@ -34,24 +18,29 @@
 
 		<!-- Bootstrap CSS -->
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+		<title>Create a new account</title>
 	</head>
 	<body>
 		<div class="container">
-		<h1>Create New Room Entry</h1>
-			<form method="POST" action="<?php $_SERVER['PHP_SELF'] ?>">
+			<h1>Create a new account</h1>
+			<form action="<?= $_SERVER['PHP_SELF'] ?>" method="post">
 				<div class="form-group">
-					<label for="hotelID">Hotel ID</label><br>
-					<input type="text" id="hotelID" name="hotelID" class="form-control">
+					<label>First and last name</label>
+					<input type="text" class="form-control" name="name">
 				</div>
 				<div class="form-group">
-					<label for="roomNumber">Room Number</label><br>
-					<input type="text" id="roomNumber" name="roomNumber" class="form-control">
+					<label>Email address</label>
+					<input type="text" class="form-control" name="email">
 				</div>
-				<input type="submit" value="Submit" class="btn btn-primary">
-				<a href="adminMain.php" class="btn btn-primary">Go Back</a>
+				<div class="form-group">
+					<label>Password</label>
+					<input type="password" class="form-control" name="password">
+				</div>
+				<button type="submit" class="btn btn-primary">Submit</button>
+				<a href="../index.php" class="btn btn-primary">Go Back</a>
 			</form>
 		</div>
-		
 		<!-- Optional JavaScript -->
 		<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 		<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>

@@ -5,7 +5,9 @@
 	require_once(APP_ROUTE.'/Db.php');
 	
 	$db=Db::Connect(DB_SETTINGS);
-	$info=$db->query('SELECT * FROM customer');
+	$info=$db->query('SELECT * FROM room');
+	$query='SELECT * FROM hotel WHERE ID = ?';
+	$q=$db->prepare($query);
 	
 	if (isset($_SESSION['email'])) {
 		$user= new Customer($_SESSION['name'], $_SESSION['email']);
@@ -42,12 +44,14 @@
 			<div class="template">
 				<?php
 					while($row=$info->fetch()){
+						$q->execute([$row['hotelID']]);
+						$hotel=$q->fetch();
 						echo '<div class="card" style="width: 18rem;">
 							<div class="card-body">
-								<h5 class="card-title">'.$row['name'].'</h5>
-								<h6 class="card-subtitle mb-2 text-muted">Email '.$row['email'].'</h6>
-								<p class="card-text">User Type '.$row['userType'].'</p>
-								<a href="deleteUserFinal.php?id='.$row['ID'].'" class="card-link">More Details</a><br>
+								<h5 class="card-title">Room Number '.$row['roomNumber'].'</h5>
+								<h6 class="card-subtitle mb-2 text-muted">Hotel '.$hotel['name'].'</h6>
+								<h6 class="card-subtitle mb-2 text-muted">Room ID '.$row['ID'].'</h6>
+								<a href="deleteRoomFinal.php?id='.$row['ID'].'" class="card-link">More Details</a><br>
 							</div>
 						</div>
 						<hr>';
