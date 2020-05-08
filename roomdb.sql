@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 08, 2020 at 02:34 AM
+-- Generation Time: May 08, 2020 at 04:29 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.1
 
@@ -116,9 +116,8 @@ CREATE TABLE `reservation` (
 --
 
 INSERT INTO `reservation` (`ID`, `roomID`, `customerID`, `dayStart`, `dayEnd`, `creditCardID`) VALUES
-(21, 5, 15, '2020-05-05', '2020-05-05', 2),
-(22, 9, 15, '2020-05-05', '2020-05-05', 2),
-(23, 3, 15, '2020-05-05', '2020-05-07', 2);
+(23, 3, 15, '2020-05-05', '2020-05-07', 2),
+(28, 1, 15, '2020-05-07', '2020-05-08', 2);
 
 -- --------------------------------------------------------
 
@@ -215,7 +214,7 @@ ALTER TABLE `hotel`
 -- AUTO_INCREMENT for table `reservation`
 --
 ALTER TABLE `reservation`
-  MODIFY `ID` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `ID` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `room`
