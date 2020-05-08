@@ -32,19 +32,21 @@
 	</head>
 
 	<body>
-		<a href="create.php" class="btn btn-primary">Click here to create a new Hotel</a>
-		<a href="delete.php" class="btn btn-primary">Click here to delete a Hotel</a>
-		<a href="modify.php" class="btn btn-primary">Click here to modify an existing Hotel</a><br><br> 
-		<a href="createRoom.php" class="btn btn-primary">Click here to create new Room</a>
-		<a href="deleteRoom.php" class="btn btn-primary">Click here to delete a Room</a>
-		<a href="modifyRoom.php" class="btn btn-primary">Click here to modify an existing Room</a><br><br>
-		<a href="createUser.php" class="btn btn-primary">Click here to add a new user</a>
-		<a href="deleteUser.php" class="btn btn-primary">Click here to delete a user</a>
-		<a href="modifyUser.php" class="btn btn-primary">Click here to modify an existing user</a>
-		<br>
-		<br>
-		<a href="../index.php" class="btn btn-primary">Go Back</a>
-		
+		<div class="card" style="width: 1270px; margin: auto;">
+			<h1>ADMIN ZONE</h1>
+			<a href="create.php" class="btn btn-primary">Click here to create a new Hotel</a><br>
+			<a href="delete.php" class="btn btn-primary">Click here to delete a Hotel</a><br>
+			<a href="modify.php" class="btn btn-primary">Click here to modify an existing Hotel</a><br><br> 
+			<a href="createRoom.php" class="btn btn-primary">Click here to create new Room</a><br>
+			<a href="deleteRoom.php" class="btn btn-primary">Click here to delete a Room</a><br>
+			<a href="modifyRoom.php" class="btn btn-primary">Click here to modify an existing Room</a><br><br>
+			<a href="createUser.php" class="btn btn-primary">Click here to add a new user</a><br>
+			<a href="deleteUser.php" class="btn btn-primary">Click here to delete a user</a><br>
+			<a href="modifyUser.php" class="btn btn-primary">Click here to modify an existing user</a>
+			<br>
+			<br>
+			<a href="../index.php" class="btn btn-primary">Go Back</a>
+		</div>
 		<!-- Optional JavaScript -->
 		<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 		<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>

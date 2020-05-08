@@ -50,7 +50,7 @@
 				<div>
 				<div class="form-group">
 					<label for="id">Enter ID of Entry to Edit</label>
-					<input type="text" id="id" name="id" class="form-control">
+					<input type="number" id="id" name="id" min="1" class="form-control">
 				</div>
 				<div class="form-group">
 					<label for="edit">Information to Insert</label>
