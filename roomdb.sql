@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 08, 2020 at 01:38 AM
+-- Generation Time: May 08, 2020 at 02:34 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.1
 
@@ -66,8 +66,7 @@ CREATE TABLE `customer` (
 
 INSERT INTO `customer` (`ID`, `name`, `email`, `password`, `userType`) VALUES
 (13, 'admin', 'admin@gmail.com', '$2y$10$6NUv.w.xgjwVXD0pMiv/2eylhYIlqlfuylEndklloPU7de2n1A.1K', 1),
-(15, 'Connor Robinette', 'connor@gmail.com', '$2y$10$evi9m7kzwiZIKyQpfSdpkeyKsL18loPZOtbmHLQA2KDTGa9r5BZ0m', 1),
-(21, 'idiot dumb', 'idiot@gmail.com', '$2y$10$TCUJ/fKB3TKyiBgIespVhOQpMH48nUEfoKQMUNTg7S7r.EIF.TkxK', 0);
+(15, 'Connor Robinette', 'connor@gmail.com', '$2y$10$evi9m7kzwiZIKyQpfSdpkeyKsL18loPZOtbmHLQA2KDTGa9r5BZ0m', 0);
 
 -- --------------------------------------------------------
 
