@@ -54,7 +54,7 @@
 				</div>
 				<div class="form-group">
 					<label for="userType">User Type</label>
-					<input type="text" id="userType" name="userType" class="form-control">
+					<input type="number" min="0" max="1" id="userType" name="userType" class="form-control">
 				</div>
 				<input type="submit" value="Submit" class="btn btn-primary">
 				<a href="adminMain.php" class="btn btn-primary">Go Back</a>
