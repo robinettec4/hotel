@@ -272,6 +272,10 @@
 				return '<div class="alert alert-danger" role="alert">YOUR DESIRED VISIT HAS ALREADY PASSED</div>';
 			}
 			
+			if($data['start'] == $data['end']){
+				return '<div class="alert alert-danger" role="alert">Your start and end date must be different dates</div>';
+			}
+			
 			//connect to db
 			require_once('settings.php');
 			require_once(APP_ROUTE.'/functions.php');
