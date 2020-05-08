@@ -34,7 +34,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
 
-		<title><?= $row['Name']?></title>
+		<title>Room <?= $row['roomNumber']?></title>
 
 		<link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/starter-template/">
 
